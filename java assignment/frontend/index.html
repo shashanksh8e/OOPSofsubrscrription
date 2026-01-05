@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java OOP Demo - Frontend Simulation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .section {
+            margin: 25px 0;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            border-color: #007bff;
+            box-shadow: 0 5px 15px rgba(0,123,255,0.1);
+        }
+        
+        .section h3 {
+            color: #495057;
+            margin-top: 0;
+            font-size: 1.4em;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin: 15px 0;
+        }
+        
+        input, button, select {
+            padding: 12px 15px;
+            margin: 8px 5px;
+            border: 2px solid #ced4da;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        }
+        
+        button {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            cursor: pointer;
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #0056b3, #004085);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            border-left: 4px solid #17a2b8;
+            min-height: 20px;
+        }
+        
+        .user-card {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 5px solid #2196f3;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .admin-card {
+            border-left-color: #ff9800;
+            background: linear-gradient(135deg, #fff3e0, #fce4ec);
+        }
+        
+        .success {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .error {
+            color: #dc3545;
+            font-weight: 600;
+        }
+        
+        .concept-badge {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin: 2px;
+        }
+        
+        .polymorphic-call {
+            background: #28a745;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Java OOP Demonstration</h1>
+        <p class="subtitle">Interactive Frontend Simulation of Object-Oriented Programming Concepts</p>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalUsers">0</div>
+                <div class="stat-label">Total Users</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="regularUsers">0</div>
+                <div class="stat-label">Regular Users</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="adminUsers">0</div>
+                <div class="stat-label">Admin Users</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>🏗️ 1. Create Users (Single Inheritance Demo)</h3>
+            <span class="concept-badge">Inheritance</span>
+            <span class="concept-badge">Constructor Chaining</span>
+            <span class="concept-badge">Abstract Classes</span>
+            
+            <div class="form-group">
+                <input type="text" id="userName" placeholder="Enter User Name" />
+                <input type="email" id="userEmail" placeholder="Enter User Email" />
+                <button onclick="createRegularUser()">Create Regular User</button>
+                <button onclick="createAdminUser()">Create Admin User</button>
+            </div>
+            <div id="createResult" class="result"></div>
+        </div>
+        
+        <div class="section">
+            <h3>👥 2. View All Users</h3>
+            <span class="concept-badge">Object Management</span>
+            
+            <button onclick="loadUsers()">Refresh User List</button>
+            <div id="usersList" class="result"></div>
+        </div>
+        
+        <div class="section">
+            <h3>🔄 3. Polymorphism Demonstration</h3>
+            <span class="concept-badge">Polymorphism</span>
+            <span class="concept-badge">Dynamic Method Dispatch</span>
+            <span class="concept-badge">Method Overriding</span>
+            
+            <button onclick="demonstratePolymorphism()">Show Polymorphic Behavior</button>
+            <div id="polymorphismResult" class="result"></div>
+        </div>
+        
+        <div class="section">
+            <h3>📢 4. Send Notifications (Method Overriding Demo)</h3>
+            <span class="concept-badge">Method Overriding</span>
+            <span class="concept-badge">Interface Implementation</span>
+            
+            <div class="form-group">
+                <select id="notifyUserId">
+                    <option value="">Select User to Notify</option>
+                </select>
+                <input type="text" id="notifyMessage" placeholder="Enter notification message" />
+                <button onclick="sendNotification()">Send Notification</button>
+            </div>
+            <div id="notifyResult" class="result"></div>
+        </div>
+        
+        <div class="section">
+            <h3>⚡ 5. Admin Actions Demo</h3>
+            <span class="concept-badge">Specialized Behavior</span>
+            <span class="concept-badge">Type Checking</span>
+            
+            <div class="form-group">
+                <select id="adminUserId">
+                    <option value="">Select Admin User</option>
+                </select>
+                <select id="targetUserId">
+                    <option value="">Select Target User</option>
+                </select>
+                <select id="adminAction">
+                    <option value="suspend">Suspend User</option>
+                    <option value="activate">Activate User</option>
+                    <option value="notify">Send Admin Notification</option>
+                </select>
+                <button onclick="performAdminAction()">Perform Admin Action</button>
+            </div>
+            <div id="adminResult" class="result"></div>
+        </div>
+        
+        <div class="section">
+            <h3>🧪 6. Constructor Chaining Demo</h3>
+            <span class="concept-badge">Constructor Chaining</span>
+            <span class="concept-badge">super() calls</span>
+            
+            <button onclick="demonstrateConstructorChaining()">Show Constructor Chain</button>
+            <div id="constructorResult" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Simulate Java classes in JavaScript
+        class User {
+            constructor(name, email) {
+                this.userId = 'USER-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+                this.name = name;
+                this.email = email;
+                this.registrationDate = new Date().toISOString().split('T')[0];
+                this.status = 'ACTIVE';
+                console.log(`User constructor called for: ${name}`);
+            }
+            
+            getAccessLevel() {
+                throw new Error('Abstract method must be implemented');
+            }
+            
+            getAccountInfo() {
+                return `User: ${this.name} (${this.email}) - Registered: ${this.registrationDate}`;
+            }
+            
+            getUserId() {
+                return this.userId; // Final method
+            }
+            
+            sendNotification(message) {
+                return `Notification to ${this.name} (${this.email}): ${message}`;
+            }
+            
+            updateStatus(newStatus) {
+                this.status = newStatus;
+                return `User ${this.name} status updated to: ${newStatus}`;
+            }
+        }
+        
+        class RegularUser extends User {
+            constructor(name, email) {
+                super(name, email); // Constructor chaining
+                console.log(`RegularUser constructor called for: ${name}`);
+            }
+            
+            getAccessLevel() {
+                return 'BASIC';
+            }
+            
+            getAccountInfo() {
+                return super.getAccountInfo() + ` | Access Level: ${this.getAccessLevel()} | Type: Regular User`;
+            }
+            
+            getSubscriptionLimits() {
+                return 'Regular users can have up to 3 active subscriptions';
+            }
+        }
+        
+        class AdminUser extends User {
+            constructor(name, email) {
+                super(name, email); // Constructor chaining
+                this.adminPermissions = ['USER_MANAGEMENT', 'SYSTEM_CONFIGURATION', 'BILLING_ACCESS', 'AUDIT_LOGS'];
+                console.log(`AdminUser constructor called for: ${name}`);
+            }
+            
+            getAccessLevel() {
+                return 'ADMIN';
+            }
+            
+            getAccountInfo() {
+                return super.getAccountInfo() + ` | Access Level: ${this.getAccessLevel()} | Type: Administrator | Permissions: ${this.adminPermissions.length}`;
+            }
+            
+            sendNotification(message) {
+                return `ADMIN NOTIFICATION to ${this.name} (${this.email}): ${message}\\nAdmin notification logged for audit purposes.`;
+            }
+            
+            manageUser(targetUser, action) {
+                return `Admin ${this.name} performing action '${action}' on user: ${targetUser.name}`;
+            }
+            
+            addPermission(permission) {
+                if (!this.adminPermissions.includes(permission)) {
+                    this.adminPermissions.push(permission);
+                    return `Permission '${permission}' added to admin user: ${this.name}`;
+                }
+                return `Permission '${permission}' already exists for admin user: ${this.name}`;
+            }
+        }
+        
+        // Application state
+        let users = [];
+        let constructorLog = [];
+        
+        function createRegularUser() {
+            const name = document.getElementById('userName').value.trim();
+            const email = document.getElementById('userEmail').value.trim();
+            
+            if (!name || !email) {
+                document.getElementById('createResult').innerHTML = '<span class="error">❌ Please fill in all fields</span>';
+                return;
+            }
+            
+            try {
+                constructorLog = [];
+                console.log = function(msg) { constructorLog.push(msg); };
+                
+                const user = new RegularUser(name, email);
+                users.push(user);
+                
+                // Restore console.log
+                console.log = console.__proto__.log;
+                
+                document.getElementById('createResult').innerHTML = `
+                    <span class="success">✅ Regular user created successfully!</span><br>
+                    <strong>User ID:</strong> ${user.getUserId()}<br>
+                    <strong>Constructor Chain:</strong><br>
+                    ${constructorLog.map(log => `• ${log}`).join('<br>')}
+                `;
+                
+                document.getElementById('userName').value = '';
+                document.getElementById('userEmail').value = '';
+                updateStats();
+                updateUserSelects();
+            } catch (error) {
+                document.getElementById('createResult').innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+            }
+        }
+        
+        function createAdminUser() {
+            const name = document.getElementById('userName').value.trim();
+            const email = document.getElementById('userEmail').value.trim();
+            
+            if (!name || !email) {
+                document.getElementById('createResult').innerHTML = '<span class="error">❌ Please fill in all fields</span>';
+                return;
+            }
+            
+            try {
+                constructorLog = [];
+                console.log = function(msg) { constructorLog.push(msg); };
+                
+                const user = new AdminUser(name, email);
+                users.push(user);
+                
+                // Restore console.log
+                console.log = console.__proto__.log;
+                
+                document.getElementById('createResult').innerHTML = `
+                    <span class="success">✅ Admin user created successfully!</span><br>
+                    <strong>User ID:</strong> ${user.getUserId()}<br>
+                    <strong>Constructor Chain:</strong><br>
+                    ${constructorLog.map(log => `• ${log}`).join('<br>')}
+                `;
+                
+                document.getElementById('userName').value = '';
+                document.getElementById('userEmail').value = '';
+                updateStats();
+                updateUserSelects();
+            } catch (error) {
+                document.getElementById('createResult').innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+            }
+        }
+        
+        function loadUsers() {
+            if (users.length === 0) {
+                document.getElementById('usersList').innerHTML = '<p>No users created yet. Create some users first!</p>';
+                return;
+            }
+            
+            let html = `<h4>👥 Total Users: ${users.length}</h4>`;
+            
+            users.forEach(user => {
+                const isAdmin = user instanceof AdminUser;
+                html += `
+                    <div class="user-card ${isAdmin ? 'admin-card' : ''}">
+                        <strong>${user.name}</strong> (${user.constructor.name}) ${isAdmin ? '👑' : '👤'}<br>
+                        <strong>Email:</strong> ${user.email}<br>
+                        <strong>Access Level:</strong> ${user.getAccessLevel()}<br>
+                        <strong>User ID:</strong> ${user.getUserId()}<br>
+                        <strong>Status:</strong> ${user.status}
+                        ${isAdmin ? `<br><strong>Permissions:</strong> ${user.adminPermissions.join(', ')}` : ''}
+                    </div>
+                `;
+            });
+            
+            document.getElementById('usersList').innerHTML = html;
+        }
+        
+        function demonstratePolymorphism() {
+            if (users.length === 0) {
+                document.getElementById('polymorphismResult').innerHTML = '<span class="error">❌ No users available. Create some users first!</span>';
+                return;
+            }
+            
+            let html = `
+                <h4>🔄 Polymorphism in Action</h4>
+                <p><strong>Concept:</strong> Same method calls, different implementations based on object type</p>
+            `;
+            
+            users.forEach(user => {
+                html += `
+                    <div class="user-card">
+                        <strong>${user.name}</strong> (${user.constructor.name})<br>
+                        <strong>Access Level:</strong> <span class="polymorphic-call">${user.getAccessLevel()}</span> ← Polymorphic call<br>
+                        <strong>Account Info:</strong> ${user.getAccountInfo()}<br>
+                        <em>Note: Same method call (getAccessLevel()), different result based on actual object type!</em>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('polymorphismResult').innerHTML = html;
+        }
+        
+        function sendNotification() {
+            const userId = document.getElementById('notifyUserId').value;
+            const message = document.getElementById('notifyMessage').value.trim();
+            
+            if (!userId || !message) {
+                document.getElementById('notifyResult').innerHTML = '<span class="error">❌ Please select user and enter message</span>';
+                return;
+            }
+            
+            const user = users.find(u => u.getUserId() === userId);
+            if (!user) {
+                document.getElementById('notifyResult').innerHTML = '<span class="error">❌ User not found</span>';
+                return;
+            }
+            
+            const notification = user.sendNotification(message);
+            
+            document.getElementById('notifyResult').innerHTML = `
+                <span class="success">✅ Notification sent successfully!</span><br>
+                <strong>User Type:</strong> ${user.constructor.name}<br>
+                <strong>Method Override Result:</strong><br>
+                <div style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                    ${notification.replace(/\\n/g, '<br>')}
+                </div>
+                <em>Notice how AdminUser has different notification behavior (method overriding)!</em>
+            `;
+            
+            document.getElementById('notifyMessage').value = '';
+        }
+        
+        function performAdminAction() {
+            const adminId = document.getElementById('adminUserId').value;
+            const targetUserId = document.getElementById('targetUserId').value;
+            const action = document.getElementById('adminAction').value;
+            
+            if (!adminId || !targetUserId) {
+                document.getElementById('adminResult').innerHTML = '<span class="error">❌ Please select admin and target user</span>';
+                return;
+            }
+            
+            const admin = users.find(u => u.getUserId() === adminId);
+            const targetUser = users.find(u => u.getUserId() === targetUserId);
+            
+            if (!admin || !targetUser) {
+                document.getElementById('adminResult').innerHTML = '<span class="error">❌ Admin or target user not found</span>';
+                return;
+            }
+            
+            if (!(admin instanceof AdminUser)) {
+                document.getElementById('adminResult').innerHTML = '<span class="error">❌ Selected user is not an admin</span>';
+                return;
+            }
+            
+            const result = admin.manageUser(targetUser, action);
+            
+            // Perform the action
+            switch (action) {
+                case 'suspend':
+                    targetUser.updateStatus('SUSPENDED');
+                    break;
+                case 'activate':
+                    targetUser.updateStatus('ACTIVE');
+                    break;
+                case 'notify':
+                    targetUser.sendNotification('You have been contacted by an administrator.');
+                    break;
+            }
+            
+            document.getElementById('adminResult').innerHTML = `
+                <span class="success">✅ Admin action performed successfully!</span><br>
+                <strong>Action:</strong> ${action}<br>
+                <strong>Admin:</strong> ${admin.name}<br>
+                <strong>Target:</strong> ${targetUser.name}<br>
+                <strong>Result:</strong> ${result}<br>
+                <em>This demonstrates specialized behavior available only to AdminUser objects!</em>
+            `;
+            
+            loadUsers(); // Refresh the user list to show status changes
+        }
+        
+        function demonstrateConstructorChaining() {
+            constructorLog = [];
+            console.log = function(msg) { constructorLog.push(msg); };
+            
+            // Create a temporary user to show constructor chaining
+            const tempUser = new AdminUser('Demo User', 'demo@example.com');
+            
+            // Restore console.log
+            console.log = console.__proto__.log;
+            
+            document.getElementById('constructorResult').innerHTML = `
+                <h4>🔗 Constructor Chaining Demonstration</h4>
+                <p><strong>Concept:</strong> Child constructors automatically call parent constructors using super()</p>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 10px;">
+                    <strong>Constructor Call Sequence:</strong><br>
+                    ${constructorLog.map((log, index) => `${index + 1}. ${log}`).join('<br>')}
+                </div>
+                <p><em>Notice how AdminUser constructor calls User constructor first (super() call)!</em></p>
+            `;
+        }
+        
+        function updateStats() {
+            const totalUsers = users.length;
+            const regularUsers = users.filter(u => u instanceof RegularUser && !(u instanceof AdminUser)).length;
+            const adminUsers = users.filter(u => u instanceof AdminUser).length;
+            
+            document.getElementById('totalUsers').textContent = totalUsers;
+            document.getElementById('regularUsers').textContent = regularUsers;
+            document.getElementById('adminUsers').textContent = adminUsers;
+        }
+        
+        function updateUserSelects() {
+            const notifySelect = document.getElementById('notifyUserId');
+            const adminSelect = document.getElementById('adminUserId');
+            const targetSelect = document.getElementById('targetUserId');
+            
+            // Clear existing options
+            notifySelect.innerHTML = '<option value="">Select User to Notify</option>';
+            adminSelect.innerHTML = '<option value="">Select Admin User</option>';
+            targetSelect.innerHTML = '<option value="">Select Target User</option>';
+            
+            users.forEach(user => {
+                const option = `<option value="${user.getUserId()}">${user.name} (${user.constructor.name})</option>`;
+                notifySelect.innerHTML += option;
+                targetSelect.innerHTML += option;
+                
+                if (user instanceof AdminUser) {
+                    adminSelect.innerHTML += option;
+                }
+            });
+        }
+        
+        // Initialize the application
+        window.onload = function() {
+            updateStats();
+            loadUsers();
+        };
+    </script>
+</body>
+</html>
